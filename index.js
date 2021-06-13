@@ -8,7 +8,7 @@ app.use(bodyParser.json())
 
 //GET
 app.get("/students", (req, res) => {
-  res.send (importData);
+  res.send ('Hello');
 });
 
 //POST
