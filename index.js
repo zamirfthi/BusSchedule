@@ -184,6 +184,7 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
         },
         {
             "$match":{
+                "route":req.params.route,
                 "station_info.station_name":req.params.station_name
             }
         },
@@ -197,6 +198,8 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
         },
         {
             "$match":{
+                "route":req.params.route,
+                "station_info.station_name":req.params.station_name,
                 "bus_info.bus_id":req.params.bus_id
             }
         },
