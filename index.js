@@ -156,9 +156,6 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
             "$match":{
                 "station_name":req.params.station_name
             }
-        },
-        {
-            "$project":{"station_info":1,"_id":0}
         }
       ])
        res.json(result)
