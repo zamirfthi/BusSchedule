@@ -310,5 +310,5 @@ app.delete("/schedules/destinations/information/:bus_id", async (req, res, next)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
+    console.log('Started listening on port http://localhost:5000');
 });
