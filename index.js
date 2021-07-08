@@ -147,6 +147,12 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
             }
         },
         {
+          "$match":{
+            "station_info.route":req.params.route
+
+          }
+        },
+        {
             "$match":{
                 "station_name":req.params.station_name
             }
