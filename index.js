@@ -210,17 +210,6 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
             }
         },
         {
-            "$match":{
-              "$and":[
-                {"bus_info.route":req.params.route},
-                {"bus_info.bus_id":req.params.bus_id}
-
-              ]
-
-                
-            }
-        },
-        {
             "$project":{"bus_info":1,"_id":0}
         }
       ])
