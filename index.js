@@ -43,8 +43,7 @@ app.post("/schedules/destinations", async (req, res, next) => {
         const user = await UserModel2.create({
             station_id: req.body.station_id,
             station_name: req.body.station_name,
-            bus_id: req.body.bus_id,
-            route: req.body.route
+            bus_id: req.body.bus_id
         })
         res.json(user)
     } catch(e) {
@@ -62,8 +61,7 @@ app.post("/schedules/destinations/information", async (req, res, next) => {
             bus_id: req.body.bus_id,
             capacity: req.body.capacity,
             driver_id: req.body.driver_id,
-            driver_name: req.body.driver_name,
-            route: req.body.route
+            driver_name: req.body.driver_name
         })
         res.json(user)
     } catch(e) {
@@ -147,15 +145,12 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
             }
         },
         {
-          "$match":{
-            "station_info.route":req.params.route
-
-          }
-        },
-        {
             "$match":{
                 "station_name":req.params.station_name
             }
+        },
+        {
+            "$project":{"station_info":1,"_id":0}
         }
       ])
        res.json(result)
@@ -188,17 +183,8 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
             }
         },
         {
-          "$match":{
-            "station_info.route":req.params.route
-
-          }
-        },
-        {
             "$match":{
-            
-              "station_info.station_name":req.params.station_name
-
-                
+                "station_name":req.params.station_name
             }
         },
         {
@@ -207,6 +193,11 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
                "localField":"station_info.bus_id",
                "foreignField":"bus_id",
                "as":"bus_info"
+            }
+        },
+        {
+            "$match":{
+                "bus_info.bus_id":req.params.bus_id
             }
         },
         {
