@@ -43,7 +43,8 @@ app.post("/schedules/destinations", async (req, res, next) => {
         const user = await UserModel2.create({
             station_id: req.body.station_id,
             station_name: req.body.station_name,
-            bus_id: req.body.bus_id
+            bus_id: req.body.bus_id,
+            route: req.body.route
         })
         res.json(user)
     } catch(e) {
@@ -185,8 +186,13 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
         },
         {
             "$match":{
-               
-                "station_info.station_name":req.params.station_name
+              "$and":[
+                {"station_info.route":req.params.route},
+                {"station_info.station_name":req.params.station_name}
+
+              ]
+
+                
             }
         },
         {
@@ -199,9 +205,13 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
         },
         {
             "$match":{
-                "bus_info.route":req.params.route,
+              "$and":[
+                {"bus_info.route":req.params.route},
+                {"bus_info.bus_id":req.params.bus_id}
+
+              ]
+
                 
-                "bus_info.bus_id":req.params.bus_id
             }
         },
         {

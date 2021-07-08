@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     station_id: String,
     station_name: String,
     bus_id: String,
+    route: String
 })
 
 const UserModel2 = mongoose.model("destinations", userSchema)
