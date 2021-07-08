@@ -61,7 +61,8 @@ app.post("/schedules/destinations/information", async (req, res, next) => {
             bus_id: req.body.bus_id,
             capacity: req.body.capacity,
             driver_id: req.body.driver_id,
-            driver_name: req.body.driver_name
+            driver_name: req.body.driver_name,
+            route: req.body.route
         })
         res.json(user)
     } catch(e) {
@@ -184,7 +185,7 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
         },
         {
             "$match":{
-                
+               
                 "station_info.station_name":req.params.station_name
             }
         },
@@ -198,12 +199,13 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
         },
         {
             "$match":{
+                "bus_info.route":req.params.route,
                 
                 "bus_info.bus_id":req.params.bus_id
             }
         },
         {
-            "$project":{"bus_info":1,"_id":0,"bus_info.station_id":0}
+            "$project":{"bus_info":1,"_id":0}
         }
       ])
        res.json(result)
