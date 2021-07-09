@@ -147,7 +147,8 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
                            "$expr":{
                                "$and":[
                                    {"$eq":["$station_name","$$station_name"]},
-                                   {"$eq":["$station_name",req.params.station_name]}
+                                   {"$eq":["$station_name",req.params.station_name]},
+                                   {"$eq":["$route",req.params.route]}
                                ]
                            }
                        }
