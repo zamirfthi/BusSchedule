@@ -160,20 +160,7 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
             "$unwind":"$station_info"
         },
         {
-            "$project":{
-                _id:0,
-                "station_info":{
-                    "$cond":{
-                        if: {
-                            "$ne":["$station_info",[]]
-                        },
-                        then: "$station_info",
-                        else:"$$REMOVE"
-                    }
-                        
-                    
-                }
-            }
+            "$project":{_id:0,"station_info":1}
         }
       ])
        res.json(result)
