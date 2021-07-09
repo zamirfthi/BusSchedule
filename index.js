@@ -157,7 +157,20 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
             }
         },
         {
-            "$project":{"station_info":1,"_id":0}
+            "$project":{
+                _id:0,
+                "station_info":{
+                    "$cond":{
+                        if: {
+                            "$ne":["$station_info",[]]
+                        },
+                        then: "$station_info",
+                        else:"$$REMOVE"
+                    }
+                        
+                    
+                }
+            }
         }
       ])
        res.json(result)
