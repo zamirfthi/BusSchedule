@@ -125,7 +125,7 @@ app.get("/schedules/:route", async (req, res, next) => {
 })
 
 //GET SCHEDULE BY ROUTE & DESTINATION BY STATION NAME
-app.get("/schedules/:route/destinations/:station_name", async (req, res, next) => {
+app.get("/schedules/:route/destinations/:station_id", async (req, res, next) => {
     try{
        const result = await UserModel1.aggregate([
         {
@@ -146,7 +146,7 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
         },
         {
             "$match":{
-                "station_name":req.params.station_name
+                "station_info.station_id":req.params.station_id
             }
         },
         {
