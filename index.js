@@ -139,14 +139,20 @@ app.get("/schedules/:route/destinations/:station_id", async (req, res, next) => 
         {
             "$lookup":{
                "from":"destinations",
-               "localField":"station_name",
-               "foreignField":"station_name",
-               "as":"station_info"
-            }
-        },
-        {
-            "$match":{
-                "station_info.station_id":req.params.station_id
+               "as":"station_info",
+               "let": {"station_name":"$station_name"},
+               "pipeline":[
+                   {
+                       "$match":{
+                           "$expr":{
+                               "$and":[
+                                   {"$eq":["$station_name","$$station_name"]},
+                                   {"$eq":["$station_id",req.params.station_id]}
+                               ]
+                           }
+                       }
+                   }
+               ]
             }
         },
         {
