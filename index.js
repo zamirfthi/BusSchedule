@@ -43,7 +43,9 @@ app.post("/schedules/destinations", async (req, res, next) => {
         const user = await UserModel2.create({
             station_id: req.body.station_id,
             station_name: req.body.station_name,
-            bus_id: req.body.bus_id
+            bus_id: req.body.bus_id,
+            route: req.body.route,
+            status: req.body.status
         })
         res.json(user)
     } catch(e) {
@@ -172,50 +174,6 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
     }
 })
 
-/*
-app.get("/schedules/:route/destinations/:station_id", async (req, res, next) => {
-    try{
-       const result = await UserModel1.aggregate([
-        {
-            "$match":{
-                "route":req.params.route
-            }
-        },
-        {
-            "$unwind":"$station_name"
-        },
-        {
-            "$lookup":{
-               "from":"destinations",
-               "as":"station_info",
-               "let": {"station_name":"$station_name"},
-               "pipeline":[
-                   {
-                       "$match":{
-                           "$expr":{
-                               "$and":[
-                                   {"$eq":["$station_name","$$station_name"]},
-                                   {"$eq":["$station_id",req.params.station_id]}
-                               ]
-                           }
-                       }
-                   }
-               ]
-            }
-        },
-        {
-            "$project":{"station_info":1,"_id":0}
-        }
-      ])
-       res.json(result)
-    } catch(e) {
-        res.status(500).json({
-            error: true,
-            message: e.message
-        })
-    }
-})*/
-
 //GET INFROMATION BY BUS_ID
 app.get("/schedules/:route/destinations/:station_name/information/:bus_id", async (req, res, next) => {
     try{
@@ -307,7 +265,9 @@ app.put("/schedules/destinations/:station_id", async (req, res, next) => {
         const user = await UserModel2.findOneAndUpdate({station_id: req.params.station_id}, {
             station_id: req.body.station_id,
             station_name: req.body.station_name,
-            bus_id: req.body.bus_id
+            bus_id: req.body.bus_id,
+            route: req.body.route,
+            status: req.body.status
         },{
             new: true,
             useFindAndModify: false
