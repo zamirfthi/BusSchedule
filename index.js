@@ -231,15 +231,25 @@ app.get("/schedules/:route/destinations/:station_name/information/:bus_id", asyn
         {
             "$lookup":{
                "from":"destinations",
-               "localField":"station_name",
-               "foreignField":"station_name",
-               "as":"station_info"
+               "as":"station_info",
+               "let": {"station_name":"$station_name"},
+               "pipeline":[
+                   {
+                       "$match":{
+                           "$expr":{
+                               "$and":[
+                                   {"$eq":["$station_name","$$station_name"]},
+                                   {"$eq":["$station_name",req.params.station_name]},
+                                   {"$eq":["$route",req.params.route]}
+                               ]
+                           }
+                       }
+                   }
+               ]
             }
         },
         {
-            "$match":{
-                "station_name":req.params.station_name
-            }
+            "$unwind":"$station_info"
         },
         {
             "$lookup":{
