@@ -125,6 +125,50 @@ app.get("/schedules/:route", async (req, res, next) => {
 })
 
 //GET SCHEDULE BY ROUTE & DESTINATION BY STATION NAME
+app.get("/schedules/:route/destinations/:station_name", async (req, res, next) => {
+    try{
+       const result = await UserModel1.aggregate([
+        {
+            "$match":{
+                "route":req.params.route
+            }
+        },
+        {
+            "$unwind":"$station_name"
+        },
+        {
+            "$lookup":{
+               "from":"destinations",
+               "as":"station_info",
+               "let": {"station_name":"$station_name"},
+               "pipeline":[
+                   {
+                       "$match":{
+                           "$expr":{
+                               "$and":[
+                                   {"$eq":["$station_name","$$station_name"]},
+                                   {"$eq":["$station_name",req.params.station_name]}
+                               ]
+                           }
+                       }
+                   }
+               ]
+            }
+        },
+        {
+            "$project":{"station_info":1,"_id":0}
+        }
+      ])
+       res.json(result)
+    } catch(e) {
+        res.status(500).json({
+            error: true,
+            message: e.message
+        })
+    }
+})
+
+/*
 app.get("/schedules/:route/destinations/:station_id", async (req, res, next) => {
     try{
        const result = await UserModel1.aggregate([
@@ -166,7 +210,7 @@ app.get("/schedules/:route/destinations/:station_id", async (req, res, next) => 
             message: e.message
         })
     }
-})
+})*/
 
 //GET INFROMATION BY BUS_ID
 app.get("/schedules/:route/destinations/:station_name/information/:bus_id", async (req, res, next) => {
