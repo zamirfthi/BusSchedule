@@ -157,6 +157,9 @@ app.get("/schedules/:route/destinations/:station_name", async (req, res, next) =
             }
         },
         {
+            "$unwind":"$station_info"
+        },
+        {
             "$project":{
                 _id:0,
                 "station_info":{
