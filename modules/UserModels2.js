@@ -3,7 +3,9 @@ const mongoose = require("mongoose")
 const userSchema = new mongoose.Schema({
     station_id: String,
     station_name: String,
-    bus_id: String
+    bus_id: String,
+    route: String,
+    status: String
 })
 
 const UserModel2 = mongoose.model("destinations", userSchema)
